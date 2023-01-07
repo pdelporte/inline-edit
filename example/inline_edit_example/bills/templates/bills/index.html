@@ -1,0 +1,85 @@
+{% extends "main.html" %}
+{% load i18n %}
+{% load static %}
+{% load main_tags %}
+
+{% block page_content %}
+    <div class="container-fluid">
+        <div class="container">
+            <h1>Inline-edit example</h1>
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Product name</th>
+                            <th>Category</th>
+                            <th>Webshop</th>
+                            <th>Availble from</th>
+                            <th>Default quantity</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <span class="inline-edit"
+                                      data-id="{{ object.id }}"
+                                      data-name="bills.Product.name"
+                                      data-type="text"
+                                      data-value="{{ object.name }}">
+                                    {{ object.name }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="inline-edit"
+                                      data-id="{{ object.id }}"
+                                      data-name="bills.Product.category_id"
+                                      data-type="select"
+                                      data-value="{{ object.category_id }}"
+                                      data-url="{% url 'api-product-category-list' %}">
+                                    {{ object.category.name }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="inline-edit"
+                                      data-id="{{ object.id }}"
+                                      data-name="bills.Product.webshop"
+                                      data-type="checkbox"
+                                      data-value="{% if object.webshop %}1{% else %}0{% endif %}">
+                                    {{ object.webshop|YesNo }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="inline-edit"
+                                      data-id="{{ object.id }}"
+                                      data-name="bills.Product.available_from"
+                                      data-type="date"
+                                      data-value="{{ object.available_from|default_if_none:""|date:"Y-m-d" }}">
+                                    {{ object.available_from|date:"d/m/Y" }}
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <span class="inline-edit"
+                                      data-id="{{ object.id }}"
+                                      data-name="bills.Product.default_quantity"
+                                      data-type="number"
+                                      data-value="{{ object.default_quantity }}">
+                                    {{ object.default_quantity }}
+                                </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}
+
+{% block scripts %}
+    {{ block.super }}
+{% endblock %}
+
+{% block stylesheet %}
+    {{ block.super }}
+{% endblock stylesheet %}
