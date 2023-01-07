@@ -1,0 +1,17 @@
+/*
+Style sheet for inline-edit
+Author : Pierre Delporte
+email : pierre.delporte@alf-solution.be
+date : 05/01/2023
+Version : 0.1.0
+License : MIT Copyright (c) 2023 Pierre Delporte
+
+Add the follow line in your main html file in the <head> section
+<link href="/static/inline_edit/inline_edit.css" rel="stylesheet" type="text/css">
+*/
+
+
+.inline-edit {
+    text-decoration: underline;
+    text-decoration-style: dotted;
+}
