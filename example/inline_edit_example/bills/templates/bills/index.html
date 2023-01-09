@@ -36,6 +36,7 @@
                                       data-name="bills.Product.category_id"
                                       data-type="select"
                                       data-value="{{ object.category_id }}"
+                                      data-label="{{ object.category.name }}"
                                       data-url="{% url 'api-product-category-list' %}">
                                     {{ object.category.name }}
                                 </span>
@@ -45,6 +46,8 @@
                                       data-id="{{ object.id }}"
                                       data-name="bills.Product.webshop"
                                       data-type="checkbox"
+                                      data-label-checked="Yes"
+                                      data-label-unchecked="No"
                                       data-value="{% if object.webshop %}1{% else %}0{% endif %}">
                                     {{ object.webshop|YesNo }}
                                 </span>
@@ -54,6 +57,7 @@
                                       data-id="{{ object.id }}"
                                       data-name="bills.Product.available_from"
                                       data-type="date"
+                                      data-label="{{ object.available_from|date:"d/m/Y" }}"
                                       data-value="{{ object.available_from|default_if_none:""|date:"Y-m-d" }}">
                                     {{ object.available_from|date:"d/m/Y" }}
                                 </span>
@@ -70,6 +74,28 @@
                         </tr>
                         </tbody>
                     </table>
+                </div>
+                <div class="row">
+                    <label>Description</label><br>
+                    <span class="inline-edit"
+                          data-id="{{ object.id }}"
+                          data-name="bills.Product.description"
+                          data-type="textarea"
+                          data-value="{{ object.description }}">
+                        {{ object.description|default_if_none:"Please complte the description"|linebreaks }}
+                    </span>
+                </div>
+                <div class="row">
+                    <label>Radio button example</label><br>
+                    <span class="inline-edit"
+                          data-id="{{ object.id }}"
+                          data-name="bills.Product.category_id"
+                          data-type="radio"
+                          data-value="{{ object.category_id }}"
+                          data-label="{{ object.category.name }}"
+                          data-url="{% url 'api-product-category-list' %}">
+                    {{ object.category.name }}
+                    </span>
                 </div>
             </div>
         </div>

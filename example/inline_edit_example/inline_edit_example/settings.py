@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-q*mvok%v8c2=d$0c%itlk5ctl!h)592((_%js%85l@q%2)uit5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['inline-edit.alf-solution.be']
 
 
 # Application definition

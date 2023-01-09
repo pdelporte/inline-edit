@@ -22,6 +22,7 @@ def upd_data(request):
     app_name, model_name, elem = request.POST.get("elem").split('.')
     value = request.POST.get("value", None)
     data_type = request.POST.get("data_type")
+    label = request.POST.get('label')
     if value == "":
         value = None
 
@@ -36,10 +37,7 @@ def upd_data(request):
             data.__setattr__(elem, value)
             data.save(update_fields=[elem])
             if data_type == "checkbox":
-                if value == "1":
-                    label = _("Yes")
-                else:
-                    label = _("No")
+                label = label
             elif data_type == "date":
                 field = getattr(data, elem, None)
                 if field is not None:
@@ -50,6 +48,8 @@ def upd_data(request):
                     label = ref.name
                 else:
                     label = value
+            elif data_type == "radio":
+                label = label
             else:
                 label = value
             rc['result'] = "success"
@@ -57,9 +57,11 @@ def upd_data(request):
             rc['data_type'] = data_type
             rc['value'] = value
             rc['label'] = label
-        except:
-            rc['result'] = 'failed'
-            rc['message'] = 'Invalid attribute'
-            rc['elem'] = request.POST.get("elem")
-            rc['value'] = value
+        finally:
+            pass
+        # except:
+        #     rc['result'] = 'failed'
+        #     rc['message'] = 'Invalid attribute'
+        #     rc['elem'] = request.POST.get("elem")
+        #     rc['value'] = value
     return JsonResponse(rc)

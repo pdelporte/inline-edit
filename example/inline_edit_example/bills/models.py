@@ -15,4 +15,5 @@ class Product(models.Model):
     webshop = models.BooleanField(default=True)
     available_from = models.DateField(null=True, blank=True)
     default_quantity = models.IntegerField(default=1)
+    description = models.TextField(null=True, blank=True)
 
