@@ -50,6 +50,8 @@ def upd_data(request):
                     label = value
             elif data_type == "radio":
                 label = label
+            elif data_type == "textarea":
+                label = value.replace("\n", "<br>")
             else:
                 label = value
             rc['result'] = "success"
@@ -57,11 +59,11 @@ def upd_data(request):
             rc['data_type'] = data_type
             rc['value'] = value
             rc['label'] = label
-        finally:
-            pass
-        # except:
-        #     rc['result'] = 'failed'
-        #     rc['message'] = 'Invalid attribute'
-        #     rc['elem'] = request.POST.get("elem")
-        #     rc['value'] = value
+        # finally:
+        #     pass
+        except:
+            rc['result'] = 'failed'
+            rc['message'] = 'Invalid attribute'
+            rc['elem'] = request.POST.get("elem")
+            rc['value'] = value
     return JsonResponse(rc)

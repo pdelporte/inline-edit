@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 
 from . import views, views_api
-from lib.utils import upd_data
+from lib.inline_edit import upd_data
 
 # app_name = 'bills'
 urlpatterns = [

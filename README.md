@@ -93,7 +93,7 @@ If you want to cancel the modification and restore the initial value, click the 
 
 ![Picture 5!](media/documentation/images/Picture2.png)
 
-The **inline edit** now works with *text*, *number*, *checkbox*, *select*, *date*, *radio* field.
+The **inline edit** now works with *text*, *number*, *checkbox*, *select*, *date*, *radio*, *textarea* field.
 
 Now that you have seen how easy it is easy to implement the inline edit, let’s come back to the parameter
 
@@ -123,7 +123,7 @@ In this Django app, in the file **models.py** there is a model called *“Produc
         name = models.CharField(max_length=255)
 
 `data-type="text"` define that the input field is of type *text*.  
-The allowed values are *text*, *number*, *select*, *date* or *checkbox*.
+The allowed values are *text*, *number*, *select*, *date*, *checkbox* or *textarea*.
 
 `data-value="{{ object.name }}"` is a raw copy the value before it is edited.  
 I added this, because sometimes you add other information like a currency symbol or format the value to be more user friendly.
@@ -316,6 +316,31 @@ It will display the radio choices
 ![Picture 17!](media/documentation/images/Picture17.png)
 
 And click the "check" button to validate the selection.
+
+## Textarea field
+
+For a *textarea* the parameters are the same than of a text *field*, excepted of course the attribute `data-type`.
+
+    <div class="row">
+        <label>Description</label><br>
+        <span class="inline-edit"
+              data-id="{{ object.id }}"
+              data-name="bills.Product.description"
+              data-type="textarea"
+              data-value="{{ object.description }}">
+            {{ object.description|default_if_none:"Please complte the description"|linebreaks }}
+        </span>
+    </div>
+
+Double click on the text.
+
+![Picture 19!](media/documentation/images/Picture19.png)
+
+The textarea input field is shown.
+
+![Picture 20!](media/documentation/images/Picture20.png)
+
+Validate or cancel the modification by clicking on the *"check"* or *"cancel"* button.
 
 ## The back end script
 
