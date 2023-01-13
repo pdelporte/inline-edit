@@ -342,6 +342,12 @@ The textarea input field is shown.
 
 Validate or cancel the modification by clicking on the *"check"* or *"cancel"* button.
 
+## Multiple inline-edit
+
+*Inline-edit* allows you to edit multiple fields at the same time
+
+![Picture 21!](media/documentation/images/Picture21.png)
+
 ## The back end script
 
 The back end script is written in python, based on the Django framework.  

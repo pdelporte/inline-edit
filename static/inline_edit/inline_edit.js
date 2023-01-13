@@ -3,8 +3,8 @@ Javascript of inline-edit
 Author : Pierre Delporte
 email : pierre.delporte@alf-solution.be
 creation date : 05/01/2023
-last update date : 09/01/2023
-Version : 0.3.0
+last update date : 13/01/2023
+Version : 0.4.0
 License : MIT Copyright (c) 2023 Pierre Delporte
 
 Add the follow line in your main html file at the end of <body> section
@@ -26,7 +26,8 @@ $(document).ready(function () {
         btn_validate.classList.add("btn-sm");
         btn_validate.innerHTML = "<i class='bi bi-check'></i>";
         btn_validate.addEventListener("click", function () {
-            upd(document.getElementById("input_cell"));
+            // upd(document.getElementById("input_cell"));
+            upd(this);
         });
         var btn_cancel = document.createElement('button');
         btn_cancel.classList.add("btn");
@@ -212,7 +213,8 @@ $(document).ready(function () {
     });
 });
 
-function upd(obj) {
+function upd(this_elm) {
+    var obj = this_elm.previousElementSibling;
     var elm = $(obj);
     var parent = $(elm).parent();
     var value = $(elm).val();

@@ -3,8 +3,8 @@ Javascript of inline-edit
 Author : Pierre Delporte
 email : pierre.delporte@alf-solution.be
 creation date : 05/01/2023
-last update date : 09/01/2023
-Version : 0.2.0
+last update date : 13/01/2023
+Version : 0.4.0
 License : MIT Copyright (c) 2023 Pierre Delporte
 
 Add the follow line in your main html file at the end of <body> section
@@ -26,7 +26,8 @@ $(document).ready(function () {
         btn_validate.classList.add("btn-sm");
         btn_validate.innerHTML = "<i class='bi bi-check'></i>";
         btn_validate.addEventListener("click", function () {
-            upd(document.getElementById("input_cell"));
+            // upd(document.getElementById("input_cell"));
+            upd(this);
         });
         var btn_cancel = document.createElement('button');
         btn_cancel.classList.add("btn");
@@ -114,9 +115,16 @@ $(document).ready(function () {
             case "textarea":
                 input.removeAttribute('value');
                 input.value = value;
-                input.addEventListener("focusout", function () {
-                    upd(this);
-                });
+                // input.addEventListener("focusout", function () {
+                //     upd(this);
+                // });
+                var div = document.createElement("div");
+                div.classList.add("input-group");
+                div.appendChild(input);
+
+                div.appendChild(btn_validate);
+                div.appendChild(btn_cancel);
+                input = div;
                 break;
             case "select":
                 var request = new XMLHttpRequest();
@@ -205,7 +213,8 @@ $(document).ready(function () {
     });
 });
 
-function upd(obj) {
+function upd(this_elm) {
+    var obj = this_elm.previousElementSibling;
     var elm = $(obj);
     var parent = $(elm).parent();
     var value = $(elm).val();
@@ -213,6 +222,7 @@ function upd(obj) {
     switch ($(elm).data("type")) {
         case "select":
         case "text":
+        case "textarea":
         case "date":
         case "number":
             parent = $(parent).parent();
@@ -256,12 +266,15 @@ function cancel_upd(obj){
                 $(obj).html($(obj).data("label-unchecked"));
             break;
         case 'text':
-        case 'textarea':
         case 'number':
             $(obj).html($(obj).data("value"));
+            break;
+        case 'textarea':
+            $(obj).html($(obj).data("value").replace(/\n/g, "<br />"));
             break;
         default:
             $(obj).html($(obj).data("label"));
             break;
     }
 }
+
