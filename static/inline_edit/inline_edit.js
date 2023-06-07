@@ -3,8 +3,8 @@ Javascript of inline-edit
 Author : Pierre Delporte
 email : pierre.delporte@alf-solution.be
 creation date : 05/01/2023
-last update date : 13/01/2023
-Version : 0.4.0
+last update date : 07/06/2023
+Version : 0.4.1
 License : MIT Copyright (c) 2023 Pierre Delporte
 
 Add the follow line in your main html file at the end of <body> section
@@ -215,8 +215,12 @@ $(document).ready(function () {
 
 function upd(this_elm) {
     var obj = this_elm.previousElementSibling;
+    if ($($(obj)).data("type") == undefined){
+        obj = this_elm.previousElementSibling.previousElementSibling;
+    }
     var elm = $(obj);
     var parent = $(elm).parent();
+
     var value = $(elm).val();
     var label = value;
     switch ($(elm).data("type")) {
