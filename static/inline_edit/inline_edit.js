@@ -4,7 +4,7 @@ Author : Pierre Delporte
 email : pierre.delporte@alf-solution.be
 creation date : 05/01/2023
 last update date : 07/06/2023
-Version : 0.4.1
+Version : 0.5.0
 License : MIT Copyright (c) 2023 Pierre Delporte
 
 Add the follow line in your main html file at the end of <body> section
@@ -21,6 +21,7 @@ $(document).ready(function () {
         }
 
         var btn_validate = document.createElement('button');
+        btn_validate.setAttribute("id", "btn_validate");
         btn_validate.classList.add("btn");
         btn_validate.classList.add("btn-outline-primary");
         btn_validate.classList.add("btn-sm");
@@ -30,6 +31,7 @@ $(document).ready(function () {
             upd(this);
         });
         var btn_cancel = document.createElement('button');
+        btn_cancel.setAttribute("id", "btn_cancel");
         btn_cancel.classList.add("btn");
         btn_cancel.classList.add("btn-outline-danger");
         btn_cancel.classList.add("btn-sm");
@@ -48,6 +50,24 @@ $(document).ready(function () {
                 input = document.createElement("input");
                 input.type = $(this).data("type");
                 input.classList.add("form-control");
+                // Execute a function when the user presses a key on the keyboard
+                input.addEventListener("keyup", function (event) {
+                    // If the user presses the "Enter" key on the keyboard
+                    if (event.code === "Enter") {
+                        // Cancel the default action, if needed
+                        event.preventDefault();
+                        // Trigger the button element with a click
+                        document.getElementById("btn_validate").click();
+                    }
+                    // If the user presses the "Escape" key on the keyboard
+                    if (event.code === "Escape") {
+                        // Cancel the default action, if needed
+                        event.preventDefault();
+                        // Trigger the button element with a click
+                        document.getElementById("btn_cancel").click();
+                    }
+
+                });
                 break;
             case "checkbox":
                 input = document.createElement("input");
@@ -63,6 +83,7 @@ $(document).ready(function () {
                 input.classList.add("form-control");
                 break;
         }
+
 
         input.setAttribute("id", "input_cell");
         input.setAttribute("value", value);
@@ -167,9 +188,10 @@ $(document).ready(function () {
                         checkbox.name = "input_cell";
                         checkbox.value = element.id;
                         checkbox.id = "input_cell" + element.id;
-                        if (element.id == value){
+                        if (element.id == value) {
                             checkbox.checked = "checked";
-                        };
+                        }
+                        ;
                         checkbox.classList.add("form-check-input");
                         checkbox.setAttribute("data-initial", value);
                         checkbox.setAttribute("data-label", element.name);
@@ -210,12 +232,13 @@ $(document).ready(function () {
         if (data_type != 'radio')
             $(this).get(0).appendChild(input); // put it into the DOM
         $("#input_cell").focus();
+        $("#input_cell").select();
     });
 });
 
 function upd(this_elm) {
     var obj = this_elm.previousElementSibling;
-    if ($($(obj)).data("type") == undefined){
+    if ($($(obj)).data("type") == undefined) {
         obj = this_elm.previousElementSibling.previousElementSibling;
     }
     var elm = $(obj);
@@ -249,10 +272,14 @@ function upd(this_elm) {
     }
 
     if (elm.data("initial") !== value) {
-        $.post('/update/data/', {'id': parent.data("id"), 'model': parent.data("model"), 'elem': parent.data("name"), 'value': value, 'data_type': parent.data("type"), 'label': label}, function (data, status) {
+        var post_func = parent.data("post_func");
+        $.post('/update/data/', {'id': parent.data("id"), 'model': parent.data("model"), 'elem': parent.data("name"), 'value': value, 'data_type': parent.data("type"), 'label': label, 'post_func': post_func}, function (data, status) {
             if (data['result'] == "success") {
                 parent.html(data['label']);
                 $(parent).data("value", value);
+                if (data['post_func'] !== '') {
+                    window[data['post_func']](data['id']);
+                }
             }
         });
     } else {
@@ -260,7 +287,7 @@ function upd(this_elm) {
     }
 };
 
-function cancel_upd(obj){
+function cancel_upd(obj) {
     var data_type = $(obj).data("type");
     switch (data_type) {
         case 'checkbox':
