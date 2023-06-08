@@ -3,9 +3,9 @@
 
 Who has never dreamed about a simple inline edit mechanism? I know that they are many libraries or scripts available, but I found them not too easy to understand or with too many parameters to be able to quickly and easily use them. So, I decided to write my own library and let me here share the result with you.
 
-The implementation that will be here describe is based on Javascript and use some Jquery feature. The back end to update effectiverly the database is based on the Django framework, but it can easily but translated to an other framework, like Flask, or any other language like PHP.
+The implementation that will be here describe is based on Javascript and use some Jquery feature. The back end to update effectively the database is based on the Django framework, but it can easily but translated to another framework, like Flask, or any other language like PHP.
 
-The javascript file (*inline_edit.js*) and the css stylesheet file (*inline_edit.css*) can be found into the driectory *static/inline_edit*. 
+The javascript file (*inline_edit.js*) and the css stylesheet file (*inline_edit.css*) can be found into the directory *static/inline_edit*. 
 
 ## How does it work?
 
@@ -25,7 +25,7 @@ Add an entry into your *urls.py* file in order to call the function to update yo
 
     path("update/data/", upd_data, name="update_data" ),
 
-Then modify you html code according to the description here after (add `<span>` attribute arround the item you want to edit).
+Then modify you html code according to the description here after (add `<span>` attribute around the item you want to edit).
 
     <span class="inline-edit" 
         data-id="{{ object.id }}" 
@@ -35,12 +35,12 @@ Then modify you html code according to the description here after (add `<span>` 
         {{ object.name }}
     </span>
 
-Restart your application, double click on item... and that's it! Enjoy
+Restart your application, double-click on item... and that's it! Enjoy
 
 ## Step by step modification
 
 ### Modification in your html file
-To implement the inline edit you have to add a few attrivutes around the element that you want to edit. For example, you want to edit the name of a product. Then around the name of the product you will add some html tags
+To implement the inline edit you have to add a few attributes around the element that you want to edit. For example, you want to edit the name of a product. Then around the name of the product you will add some html tags
 
     <table class="table table-hover table-bordered">
         <tr>
@@ -72,15 +72,15 @@ To enable inline edit we must change the html code to:
         </span>
     </td>
 
-If we refresh the page, it will now looks to something like this :
+If we refresh the page, it will now look to something like this :
 
 ![Picture 2!](media/documentation/images/Picture2.png)
 
-You do not see many changes, except the dotted line under the name of the product. This shows you that you can edit this information by double clicking on it.
+You do not see many changes, except the dotted line under the name of the product. This shows you that you can edit this information by double-clicking on it.
 
 Of course, you can easily change this layout formatting by modifying the css file *inline_edit.css*.
 
-Now if we double click on the product name, an input field will replace the text, allowing to update the information
+Now if we double-click on the product name, an input field will replace the text, allowing to update the information
 
 ![Picture 3!](media/documentation/images/Picture3.png)
 
@@ -126,7 +126,7 @@ In this Django app, in the file **models.py** there is a model called *“Produc
 The allowed values are *text*, *number*, *select*, *date* or *checkbox*.
 
 `data-value="{{ object.name }}"` is a raw copy the value before it is edited.  
-I added this, because sometimes you add other information like a currency symbol or format the value to be more user friendly.
+I added this, because sometimes you add other information like a currency symbol or format the value to be more user-friendly.
 
 ## What about editing a foreign key? 
 
@@ -147,7 +147,7 @@ It works pretty much the same way, excepted that the type of input field will be
     </tr>
 
 The attribute `data-url` will contain the url to retrieve the list of categories in json format.  
-The information returned must contains and *id* and *name* field.  
+The information returned must contain and *id* and *name* field.  
 Example or return values :
 
     [{"id":7,"name":"Web"},{"id":8,"name":"Licences"},{"id":9,"name":"Devolo"},{"id":10,"name":"SSD"},{"id":11,"name":"Hardware"},{"id":1,"name":"Général"}]
@@ -186,9 +186,9 @@ Add in your *urls.py* the following line
 
     path('product/unit/api', views_api.ProductUnitList.as_view(), name='api-product-unit-list'),
 
-Of course you have to create as many API function as you need to rerieve list of values for any *select* input item
+Of course, you have to create as many API function as you need to retrieve list of values for any *select* input item
 
-When you double click on the information to change, an input field with the actual value is shown
+When you double-click on the information to change, an input field with the actual value is shown
 
 ![Picture 6!](media/documentation/images/Picture6.png) 
 
@@ -200,7 +200,7 @@ Select the wanted value
 
 ![Picture 8!](media/documentation/images/Picture8.png)
  
-And click outside of the field.
+And click outside the field.
 The value is changed
 
 ![Picture 9!](media/documentation/images/Picture9.png) 
@@ -254,7 +254,7 @@ You can of course select the date with the drop-down calendar
 
 ![Picture 12!](media/documentation/images/Picture12.png)
 
-To close and save the modification, click outside of the input field.
+To close and save the modification, click outside the input field.
 
 For a **number**:
 
@@ -273,7 +273,7 @@ For a **number**:
 
 ![Picture 13!](media/documentation/images/Picture13.png)
 
-Double click on the value to open the inline edit
+Double-click on the value to open the inline edit
  
 ![Picture 14!](media/documentation/images/Picture14.png)
 
@@ -282,7 +282,7 @@ Update the value and click outside to validate the change
 ![Picture 15!](media/documentation/images/Picture15.png)
 
 ## Callback function ##
-Sometimes when you edit a field, there is a dependency on an other one. For exemple, modifying a price excluding vat, you would like that the price with vat will be updated. It is now possible.
+Sometimes when you edit a field, there is a dependency on another one. For exemple, modifying a price excluding vat, you would like that the price with vat will be updated. It is now possible.
 Add *data-post_func* to the definition with the name of the javascript function to be call.
 *data-post_func="calc_price_vat_incl"*
 
