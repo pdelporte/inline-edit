@@ -37,10 +37,6 @@ Then modify you html code according to the description here after (add `<span>` 
 
 Restart your application, double click on item... and that's it! Enjoy
 
-## Demo
-
-Want to give a try ? [Demo site](https://inline-edit.alf-solution.be/)
-
 ## Step by step modification
 
 ### Modification in your html file
@@ -59,6 +55,10 @@ To implement the inline edit you have to add a few attrivutes around the element
 
 In django template's, `{{ object.name }}` will be effectively replace by the name of the product.  
 The same for `{{ object.category }}` which will display the name of the category of the product.
+
+The above code will product something like this :
+
+![Picture 1!](media/documentation/images/Picture1.png)
 
 To enable inline edit we must change the html code to:
 
@@ -84,16 +84,15 @@ Now if we double click on the product name, an input field will replace the text
 
 ![Picture 3!](media/documentation/images/Picture3.png)
 
-Change the information to, i.e., it’s abreviation
+Change the information to, i.e., it’s English translation
 
 ![Picture 4!](media/documentation/images/Picture4.png)
 
-To validate the change just click "check" button and that’s it!  
-If you want to cancel the modification and restore the initial value, click the "x" button
+To validate the change just click outside the field and that’s it!
 
-![Picture 5!](media/documentation/images/Picture2.png)
+![Picture 5!](media/documentation/images/Picture5.png)
 
-The **inline edit** now works with *text*, *number*, *checkbox*, *select*, *date*, *radio*, *textarea* field.
+The **inline edit** now works with *text*, *number*, *checkbox*, *select* and *date* field.
 
 Now that you have seen how easy it is easy to implement the inline edit, let’s come back to the parameter
 
@@ -106,6 +105,7 @@ Now that you have seen how easy it is easy to implement the inline edit, let’s
             {{ object.name }}
         </span>
     </td>
+
 
 The class name must be `class="inline-edit"  of course you can add any other class definition to it.
 
@@ -123,7 +123,7 @@ In this Django app, in the file **models.py** there is a model called *“Produc
         name = models.CharField(max_length=255)
 
 `data-type="text"` define that the input field is of type *text*.  
-The allowed values are *text*, *number*, *select*, *date*, *checkbox* or *textarea*.
+The allowed values are *text*, *number*, *select*, *date* or *checkbox*.
 
 `data-value="{{ object.name }}"` is a raw copy the value before it is edited.  
 I added this, because sometimes you add other information like a currency symbol or format the value to be more user friendly.
@@ -140,22 +140,19 @@ It works pretty much the same way, excepted that the type of input field will be
                   data-name="bills.Product.category_id"
                   data-type="select"
                   data-value="{{ object.category_id }}"
-                  data-label="{{ object.category.name }}"
-                  data-url="{% url 'api-product-category-list' %}">
-                {{ object.category.name }}
+                  data-url="{% url 'bills:api-product-category-list' %}">
+                {{ object.category }}
             </span>
         </td>
     </tr>
 
 The attribute `data-url` will contain the url to retrieve the list of categories in json format.  
-The information returned must contains and an *id* and a *name* field.  
+The information returned must contains and *id* and *name* field.  
 Example or return values :
 
     [{"id":7,"name":"Web"},{"id":8,"name":"Licences"},{"id":9,"name":"Devolo"},{"id":10,"name":"SSD"},{"id":11,"name":"Hardware"},{"id":1,"name":"Général"}]
 
 You can easily use the Django *rest_framework* to carry on this.
-
-`data-label` will be the text that will be re-displayed if you cancel the edition of the field.
 
 Here is an example of the API view to return the list of ProductCategory (To have a very good documentation on Django Rest Framework [click here](https://simpleisbetterthancomplex.com/tutorial/2018/11/22/how-to-implement-token-authentication-using-django-rest-framework.html))
 (file is : *app_name/views_api.py*)
@@ -196,16 +193,17 @@ When you double click on the information to change, an input field with the actu
 ![Picture 6!](media/documentation/images/Picture6.png) 
 
 Click again into the field, the list of options is shown.
-Select the wanted value
  
 ![Picture 7!](media/documentation/images/Picture7.png)
 
-And click the "check" button of the field to validate the change
+Select the wanted value
 
+![Picture 8!](media/documentation/images/Picture8.png)
+ 
+And click outside of the field.
+The value is changed
 
 ![Picture 9!](media/documentation/images/Picture9.png) 
-
-## Boolean value, with a *checkbox* field
 
 Let’s have a look for a **Boolean** value, like if the product is available in the webshop. In the HTML we had:
 
@@ -225,8 +223,6 @@ Let’s add the attributes to enable the inline edit. The code is now:
                   data-id="{{ object.id }}"
                   data-name="bills.Product.webshop"
                   data-type="checkbox"
-                  data-label-checked="Yes"
-                  data-label-unchecked="No"
                   data-value="{% if object.webshop %}1{% else %}0{% endif %}">
             {{ object.webshop|YesNo }}
             </span>
@@ -237,8 +233,6 @@ The output is:
  
 ![Picture 10!](media/documentation/images/Picture10.png)
 
-## Date field
-
 For a date the HTML attributes will be:
 
     <tr>
@@ -248,7 +242,6 @@ For a date the HTML attributes will be:
                   data-id="{{ object.id }}"
                   data-name="bills.Product.available_from"
                   data-type="date"
-                  data-label="{{ object.available_from|date:"d/m/Y" }}"
                   data-value="{{ object.available_from|default_if_none:""|date:"Y-m-d" }}">
                 {{ object.available_from|default_if_none:""|date:"d/m/Y" }}
             </span>
@@ -261,9 +254,8 @@ You can of course select the date with the drop-down calendar
 
 ![Picture 12!](media/documentation/images/Picture12.png)
 
-To close and save the modification, click "check" button of the input field.
+To close and save the modification, click outside of the input field.
 
-## Number field
 For a **number**:
 
     <tr>
@@ -279,7 +271,7 @@ For a **number**:
         </td>
     </tr>
 
-![Picture 13!](media/documentation/images/Picture1".png)
+![Picture 13!](media/documentation/images/Picture13.png)
 
 Double click on the value to open the inline edit
  
@@ -289,64 +281,32 @@ Update the value and click outside to validate the change
  
 ![Picture 15!](media/documentation/images/Picture15.png)
 
-## Radio button field
-Earlier we saw how to edit a foreign key with a *select* field. We could also achieved this with radio buttons.  
-The code would be :
+## Callback function ##
+Sometimes when you edit a field, there is a dependency on an other one. For exemple, modifying a price excluding vat, you would like that the price with vat will be updated. It is now possible.
+Add *data-post_func* to the definition with the name of the javascript function to be call.
+*data-post_func="calc_price_vat_incl"*
 
-     <div class="row">
-        <label>Radio button example</label><br>
-        <span class="inline-edit"
-              data-id="{{ object.id }}"
-              data-name="bills.Product.category_id"
-              data-type="radio"
-              data-value="{{ object.category_id }}"
-              data-label="{{ object.category.name }}"
-              data-url="{% url 'api-product-category-list' %}">
-        {{ object.category.name }}
-        </span>
-    </div>
+    <span class="text-end inline-edit"
+          id="product-price-vat-excl_{{ object.id }}"
+          data-id="{{ object.id }}"
+          data-name="bills.product.price_vat_excl"
+          data-type="number"
+          data-value="{{ object.price_vat_excl }}"
+          data-post_func="calc_price_vat_incl">
+        {{ object.price_vat_excl }}
+    </span>
 
-It is the same as the *select* field excepted for the `data-type` which is *radio*.
-Double click on the item  
+The javascript function could be something like : 
 
-![Picture 16!](media/documentation/images/Picture16.png)
+     function calc_price_vat_incl(id) {
+        var price_vat_excl = parseFloat($("#product-price-vat-excl_" + id).data("value"));
+        var vat = parseFloat($("#vat_" + id).data("value"));
+        var price_vat_incl = price_vat_excl * (1 + (vat / 100));
+        $("#product-price-vat-incl_" + id).html(price_vat_incl);
+        $("#product-price-vat-incl_" + id).data('value', price_vat_incl);
+    }
 
-It will display the radio choices
-
-![Picture 17!](media/documentation/images/Picture17.png)
-
-And click the "check" button to validate the selection.
-
-## Textarea field
-
-For a *textarea* the parameters are the same than of a text *field*, excepted of course the attribute `data-type`.
-
-    <div class="row">
-        <label>Description</label><br>
-        <span class="inline-edit"
-              data-id="{{ object.id }}"
-              data-name="bills.Product.description"
-              data-type="textarea"
-              data-value="{{ object.description }}">
-            {{ object.description|default_if_none:"Please complte the description"|linebreaks }}
-        </span>
-    </div>
-
-Double click on the text.
-
-![Picture 19!](media/documentation/images/Picture19.png)
-
-The textarea input field is shown.
-
-![Picture 20!](media/documentation/images/Picture20.png)
-
-Validate or cancel the modification by clicking on the *"check"* or *"cancel"* button.
-
-## Multiple inline-edit
-
-*Inline-edit* allows you to edit multiple fields at the same time
-
-![Picture 21!](media/documentation/images/Picture21.png)
+Note : the function always receive as argument the id of the object, so the function muse avec a parameter, i.e. *id*.
 
 ## The back end script
 
@@ -376,7 +336,7 @@ In order to keep the match between this documentation and the last release, plea
 
 MIT License
 
-Copyright (c) 2023 Pierre Delporte
+Copyright (c) [year] [fullname]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
